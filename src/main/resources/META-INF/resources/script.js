@@ -25,6 +25,18 @@ const createEntry = (e) => {
         });
     });
 };
+//delete
+const deleteEntry = (id) => {
+    fetch(`${URL}/entries/${id}`, {
+        method: 'DELETE'
+    }).then((result) => {
+        result.json().then((entry) => {
+            entries = entries.filter((e) => e.id !== entry.id);
+            renderEntries();
+        });
+    });
+};
+
 
 const indexEntries = () => {
     fetch(`${URL}/entries`, {
@@ -52,6 +64,8 @@ const renderEntries = () => {
         row.appendChild(createCell(entry.id));
         row.appendChild(createCell(new Date(entry.checkIn).toLocaleString()));
         row.appendChild(createCell(new Date(entry.checkOut).toLocaleString()));
+        row.appendChild(createCell(document.createElement('button').innerText = 'Delete'));
+        row.appendChild(createCell(document.createElement('button').innerText = 'Edit'));
         display.appendChild(row);
     });
 };

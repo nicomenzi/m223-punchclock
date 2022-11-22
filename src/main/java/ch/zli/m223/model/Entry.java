@@ -4,7 +4,10 @@ import javax.persistence.*;
 
 import org.eclipse.microprofile.openapi.annotations.media.Schema;
 
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
+
 import java.time.LocalDateTime;
+import java.util.Set;
 
 @Entity
 public class Entry {
@@ -18,6 +21,21 @@ public class Entry {
 
   @Column(nullable = false)
   private LocalDateTime checkOut;
+  
+  @ManyToOne
+
+  public Category category;
+
+  @ManyToMany(cascade = {CascadeType.ALL})
+  @JoinTable(
+    name = "Entry_Tag",
+    joinColumns = {@JoinColumn(name = "entry_id")},
+    inverseJoinColumns = {@JoinColumn(name = "tag_id")}
+  )
+  @JsonIgnoreProperties("entries")
+  private Set<Tag> tags;
+
+  
 
   public Long getId() {
     return id;
@@ -42,4 +60,14 @@ public class Entry {
   public void setCheckOut(LocalDateTime checkOut) {
     this.checkOut = checkOut;
   }
+
+  public Category getCategory() {
+    return category;
+  }
+
+  public void setCategory(Category category) {
+    this.category = category;
+  }
+  
+
 }
